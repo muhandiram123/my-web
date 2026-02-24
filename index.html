@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>G.M. Nisal Muhandiram | Website</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- PDF/Word/PPT processing libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
+</head>
+
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div id="loader" class="loader">
+        <div class="loader-inner">
+            <div class="loader-ring"></div>
+            <div class="loader-ring r2"></div>
+            <div class="loader-ring r3"></div>
+            <img src="nisal.jpg" alt="" class="loader-img" />
+        </div>
+        <p class="loader-text">Loading<span class="loader-dots"></span></p>
+    </div>
+
+    <!-- CUSTOM CURSOR -->
+    <div id="cursor" class="cursor"></div>
+    <div id="cursorTrail" class="cursor-trail"></div>
+
+    <!-- SCROLL PROGRESS BAR -->
+    <div id="scrollBar" class="scroll-progress"></div>
+
+    <!-- ===== LOGIN SCREEN ===== -->
+    <div id="loginScreen" class="login-screen site-hidden">
+        <canvas id="loginCanvas" class="login-canvas"></canvas>
+        <div class="login-card">
+            <div class="login-avatar-wrap">
+                <div class="login-avatar-ring"></div>
+                <img src="nisal.jpg" alt="Nisal" class="login-avatar" />
+            </div>
+            <h2>G.M. Nisal Muhandiram</h2>
+            <p>Enter password to access portfolio</p>
+            <div class="login-input-row">
+                <input type="password" id="loginInput" placeholder="••••••••••" />
+                <button onclick="attemptLogin()"><i class="fa fa-arrow-right"></i></button>
+            </div>
+            <p id="loginError" class="err-msg"></p>
+        </div>
+    </div>
+
+    <!-- ===== MAIN SITE ===== -->
+    <div id="mainSite" class="site-hidden">
+
+        <!-- NAVBAR -->
+        <header id="navbar">
+            <a href="#home" class="brand">
+                <span class="brand-icon">NM</span>
+                <span class="brand-text">Portfolio</span>
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <a href="#home" class="nav-a active" onclick="setActive(this)">Home</a>
+                <a href="#about" class="nav-a" onclick="setActive(this)">About</a>
+                <a href="#skills" class="nav-a" onclick="setActive(this)">Skills</a>
+                <a href="#projects" class="nav-a" onclick="setActive(this)">Projects</a>
+                <a href="#myproduct" class="nav-a" onclick="setActive(this)">My Product</a>
+                <a href="#gallery" class="nav-a" onclick="setActive(this)">Gallery</a>
+                <a href="#notes" class="nav-a" onclick="setActive(this)">Notes</a>
+                <a href="#contact" class="nav-a" onclick="setActive(this)">Contact</a>
+            </nav>
+            <div class="nav-right">
+                <button class="btn-cv" onclick="toggleEditMode()" id="editBtn">✏️ Edit Mode</button>
+                <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- EDIT BANNER -->
+        <div id="editBanner" class="edit-banner site-hidden">
+            <span>✏️ Edit Mode — Click any text to edit</span>
+            <button onclick="saveEdits()">💾 Save</button>
+            <button onclick="exitEditMode()">✖ Exit</button>
+        </div>
+
+        <!-- PARTICLES CANVAS (hero bg) -->
+        <canvas id="particles" class="particles-canvas"></canvas>
+
+        <!-- ===== HOME ===== -->
+        <section id="home" class="home-section">
+            <div class="home-text reveal-left">
+                <div class="home-greeting-wrap">
+                    <span class="greeting-line"></span>
+                    <span class="home-greeting editable" data-key="greeting" id="greeting">Hello, I'm</span>
+                </div>
+                <h1 class="home-name">
+                    <span class="glitch editable" data-key="homeName" id="homeName"
+                        data-text="G.M. Nisal Muhandiram">G.M. Nisal Muhandiram</span>
+                </h1>
+                <div class="typewriter-wrap">
+                    And I'm a <span class="typewriter" id="typewriterEl"></span>
+                </div>
+                <p class="home-bio editable" data-key="homeBio" id="homeBio">
+                    Passionate student at the University of Sri Jayawardanapura, driven by creativity and excellence.
+                    Turning ideas into reality, one step at a time.
+                </p>
+                <div class="home-social">
+                    <a href="#" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="mailto:nisalmuhandiram2004@gmail.com" class="social-icon" title="Email"><i
+                            class="fas fa-envelope"></i></a>
+                    <a href="tel:0715864863" class="social-icon" title="Phone"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="home-btns">
+                    <a href="#contact" class="btn-hire ripple">Hire Me</a>
+                    <a href="#contact" class="btn-contact ripple">Contact Me <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="home-img-wrap reveal-right">
+                <div class="img-orbit">
+                    <div class="orbit-ring or1"></div>
+                    <div class="orbit-ring or2"></div>
+                    <div class="orbit-dot od1"><i class="fab fa-html5"></i></div>
+                    <div class="orbit-dot od2"><i class="fab fa-css3-alt"></i></div>
+                    <div class="orbit-dot od3"><i class="fab fa-js"></i></div>
+                    <div class="orbit-dot od4"><i class="fab fa-python"></i></div>
+                </div>
+                <div class="img-glow-ring"></div>
+                <div class="img-circle">
+                    <img src="nisal.jpg" alt="G.M. Nisal Muhandiram" />
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS BAR -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number" data-target="21" data-key="sn1" id="sn1">0</span>
+                <span class="stat-suffix">+</span>
+                <span class="stat-desc">Years Old</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="10" data-key="sn2" id="sn2">0</span>
+                <span class="stat-suffix">+</span>
+                <span class="stat-desc">Projects Done</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="5" data-key="sn3" id="sn3">0</span>
+                <span class="stat-suffix">+</span>
+                <span class="stat-desc">Technologies</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="100" data-key="sn4" id="sn4">0</span>
+                <span class="stat-suffix">%</span>
+                <span class="stat-desc">Dedication</span>
+            </div>
+        </div>
+
+        <!-- ===== ABOUT ===== -->
+        <section id="about" class="section">
+            <div class="section-header-wrap reveal-up">
+                <span class="section-tag">01</span>
+                <h2 class="section-heading">About <span>Me</span></h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-img-wrap reveal-left">
+                    <div class="about-img-glow"></div>
+                    <div class="about-img-circle tilt-card">
+                        <img src="nisal.jpg" alt="Nisal" />
+                    </div>
+                    <div class="about-badge ab1">🎓 USJ Student</div>
+                    <div class="about-badge ab2">💻 Developer</div>
+                </div>
+                <div class="about-info reveal-right">
+                    <h3 class="editable" data-key="aboutHead" id="aboutHead">Who Am I?</h3>
+                    <p class="editable" data-key="aboutPara1" id="aboutPara1">
+                        I'm G.M. Nisal Muhandiram, a dedicated and passionate student pursuing my degree at the
+                        University of Sri Jayawardanapura. I believe in constant growth and pushing limits.
+                    </p>
+                    <p class="editable" data-key="aboutPara2" id="aboutPara2">
+                        With a creative mind and a strong work ethic, I strive to deliver excellence in everything I put
+                        my hands to — from academics to creative digital projects.
+                    </p>
+                    <div class="about-details">
+                        <div class="detail-row tilt-card"><span>📛 Name</span><span class="editable" data-key="dName"
+                                id="dName">G.M. Nisal Muhandiram</span></div>
+                        <div class="detail-row tilt-card"><span>📱 Phone</span><span class="editable" data-key="dPhone"
+                                id="dPhone">0715864863</span></div>
+                        <div class="detail-row tilt-card"><span>📧 Email</span><span class="editable" data-key="dEmail"
+                                id="dEmail">nisalmuhandiram2004@gmail.com</span></div>
+                        <div class="detail-row tilt-card"><span>🎓 University</span><span class="editable"
+                                data-key="dUni" id="dUni">University of Sri Jayawardanapura</span></div>
+                    </div>
+                    <a href="#contact" class="btn-hire ripple">Get In Touch</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SKILLS ===== -->
+        <section id="skills" class="section skills-section">
+            <div class="section-header-wrap reveal-up">
+                <span class="section-tag">02</span>
+                <h2 class="section-heading">My <span>Skills</span></h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card tilt-card reveal-up" style="--d:0s">
+                    <div class="skill-icon-wrap"><i class="fab fa-html5" style="color:#e34c26"></i></div>
+                    <span class="skill-name">HTML5</span>
+                    <div class="skill-bar-wrap">
+                        <div class="skill-bar" style="--w:90%"></div>
+                    </div>
+                    <span class="skill-pct">90%</span>
+                </div>
+                <div class="skill-card tilt-card reveal-up" style="--d:.1s">
+                    <div class="skill-icon-wrap"><i class="fab fa-css3-alt" style="color:#264de4"></i></div>
+                    <span class="skill-name">CSS3</span>
+                    <div class="skill-bar-wrap">
+                        <div class="skill-bar" style="--w:85%"></div>
+                    </div>
+                    <span class="skill-pct">85%</span>
+                </div>
+                <div class="skill-card tilt-card reveal-up" style="--d:.2s">
+                    <div class="skill-icon-wrap"><i class="fab fa-js" style="color:#f0db4f"></i></div>
+                    <span class="skill-name">JavaScript</span>
+                    <div class="skill-bar-wrap">
+                        <div class="skill-bar" style="--w:80%"></div>
+                    </div>
+                    <span class="skill-pct">80%</span>
+                </div>
+                <div class="skill-card tilt-card reveal-up" style="--d:.3s">
+                    <div class="skill-icon-wrap"><i class="fab fa-python" style="color:#3776ab"></i></div>
+                    <span class="skill-name">Python</span>
+                    <div class="skill-bar-wrap">
+                        <div class="skill-bar" style="--w:70%"></div>
+                    </div>
+                    <span class="skill-pct">70%</span>
+                </div>
+                <div class="skill-card tilt-card reveal-up" style="--d:.4s">
+                    <div class="skill-icon-wrap"><i class="fab fa-git-alt" style="color:#f05032"></i></div>
+                    <span class="skill-name">Git</span>
+                    <div class="skill-bar-wrap">
+                        <div class="skill-bar" style="--w:75%"></div>
+                    </div>
+                    <span class="skill-pct">75%</span>
+                </div>
+                <div class="skill-card tilt-card reveal-up" style="--d:.5s">
+                    <div class="skill-icon-wrap"><i class="fas fa-database" style="color:#00b4d8"></i></div>
+                    <span class="skill-name">Database</span>
+                    <div class="skill-bar-wrap">
+                        <div class="skill-bar" style="--w:65%"></div>
+                    </div>
+                    <span class="skill-pct">65%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TIMELINE ===== -->
+        <section id="timeline" class="section timeline-section">
+            <div class="section-header-wrap reveal-up">
+                <span class="section-tag">03</span>
+                <h2 class="section-heading">My <span>Journey</span></h2>
+            </div>
+            <div class="timeline">
+                <div class="tl-item reveal-left">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card tilt-card">
+                        <span class="tl-year">2022</span>
+                        <h4 class="editable" data-key="tl1h" id="tl1h">A/L Completed</h4>
+                        <p class="editable" data-key="tl1p" id="tl1p">Successfully completed Advanced Level examinations
+                            with flying colors, opening the door to university life.</p>
+                    </div>
+                </div>
+                <div class="tl-item tl-right reveal-right">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card tilt-card">
+                        <span class="tl-year">2023</span>
+                        <h4 class="editable" data-key="tl2h" id="tl2h">University Entrance</h4>
+                        <p class="editable" data-key="tl2p" id="tl2p">Entered the University of Sri Jayawardanapura — a
+                            new chapter full of opportunities, learning, and growth.</p>
+                    </div>
+                </div>
+                <div class="tl-item reveal-left">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card tilt-card">
+                        <span class="tl-year">2024</span>
+                        <h4 class="editable" data-key="tl3h" id="tl3h">Started Web Development</h4>
+                        <p class="editable" data-key="tl3p" id="tl3p">Began exploring web development and creative
+                            digital projects, building real-world skills alongside academics.</p>
+                    </div>
+                </div>
+                <div class="tl-item tl-right reveal-right">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card tilt-card">
+                        <span class="tl-year">2025</span>
+                        <h4 class="editable" data-key="tl4h" id="tl4h">Future Goals</h4>
+                        <p class="editable" data-key="tl4p" id="tl4p">Continuing to grow, innovate, and make an impact.
+                            The best is yet to come!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PROJECTS ===== -->
+        <section id="projects" class="section projects-section">
+            <div class="section-header-wrap reveal-up">
+                <span class="section-tag">04</span>
+                <h2 class="section-heading">My <span>Projects</span></h2>
+            </div>
+            <div class="projects-grid" id="projectsGrid">
+                <div class="project-card tilt-card reveal-up" style="--d:0s">
+                    <div class="project-img">
+                        <i class="fas fa-globe project-icon"></i>
+                        <div class="project-overlay">
+                            <a href="#" class="btn-hire ripple" style="font-size:.8rem;padding:8px 20px">View</a>
+                        </div>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-tags"><span class="ptag">HTML</span><span class="ptag">CSS</span><span
+                                class="ptag">JS</span></div>
+                        <h4 class="editable" data-key="p1h" id="p1h">Portfolio Website</h4>
+                        <p class="editable" data-key="p1p" id="p1p">A fully animated, multi-functional personal
+                            portfolio showcasing skills and projects.</p>
+                    </div>
+                </div>
+                <div class="project-card tilt-card reveal-up" style="--d:.15s">
+                    <div class="project-img" style="background:linear-gradient(135deg,#0077b6,#023e8a)">
+                        <i class="fas fa-graduation-cap project-icon"></i>
+                        <div class="project-overlay">
+                            <a href="#" class="btn-hire ripple" style="font-size:.8rem;padding:8px 20px">View</a>
+                        </div>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-tags"><span class="ptag">Python</span><span class="ptag">Database</span>
+                        </div>
+                        <h4 class="editable" data-key="p2h" id="p2h">University Project</h4>
+                        <p class="editable" data-key="p2p" id="p2p">Academic project developed as part of university
+                            coursework with real-world application.</p>
+                    </div>
+                </div>
+                <div class="project-card tilt-card reveal-up" style="--d:.3s">
+                    <div class="project-img" style="background:linear-gradient(135deg,#2a9d8f,#264653)">
+                        <i class="fas fa-plus project-icon"></i>
+                        <div class="project-overlay add-project-overlay">
+                            <p style="color:rgba(255,255,255,0.6);font-size:.85rem">Your project here</p>
+                        </div>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-tags"><span class="ptag editable" data-key="p3t" id="p3t">Tech</span></div>
+                        <h4 class="editable" data-key="p3h" id="p3h">Add Your Project</h4>
+                        <p class="editable" data-key="p3p" id="p3p">Enable edit mode and click to add your own project
+                            title and description here.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MY PRODUCT (TRANSLATOR) ===== -->
+        <section id="myproduct" class="section">
+            <div class="section-header-wrap reveal-up">
+                <span class="section-tag">05</span>
+                <h2 class="section-heading">My <span>Product</span></h2>
+                <p style="color:var(--gray);text-align:center;margin-top:10px;">Universal Document & Text Translator</p>
+            </div>
+
+            <div class="translator-container reveal-up">
+                <div class="translator-card tilt-card">
+                    <div class="lang-controls">
+                        <select id="srcLang" class="n-input">
+                            <option value="autodetect">Detect Language</option>
+                            <option value="en">English</option>
+                            <option value="si">Sinhala</option>
+                            <option value="ta">Tamil</option>
+                            <option value="hi">Hindi</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="ja">Japanese</option>
+                        </select>
+                        <i class="fas fa-exchange-alt"></i>
+                        <select id="targetLang" class="n-input">
+                            <option value="si">Sinhala</option>
+                            <option value="en" selected>English</option>
+                            <option value="ta">Tamil</option>
+                            <option value="hi">Hindi</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="ja">Japanese</option>
+                        </select>
+                    </div>
+
+                    <div class="translator-body">
+                        <div class="input-area">
+                            <textarea id="transInput" placeholder="Enter text to translate or upload a file..."
+                                class="n-textarea"></textarea>
+                            <div class="file-drop-zone" id="dropZone">
+                                <i class="fas fa-file-upload"></i>
+                                <p>Drag & drop PDF, Word, or PPT</p>
+                                <input type="file" id="transFileUpload" accept=".pdf,.doc,.docx,.ppt,.pptx"
+                                    style="display:none" onchange="handleTransUpload(event)" />
+                                <button class="btn-cv" onclick="document.getElementById('transFileUpload').click()"
+                                    style="margin-top:10px">Browse Files</button>
+                            </div>
+                        </div>
+
+                        <div class="trans-btns">
+                            <button class="btn-hire ripple" id="translateBtn" onclick="performTranslation()">
+                                <i class="fas fa-language"></i> Translate Now
+                            </button>
+                            <button class="btn-contact ripple" onclick="clearTranslator()">
+                                <i class="fas fa-eraser"></i> Clear
+                            </button>
+                        </div>
+
+                        <div id="translatorLoading" class="translator-loading site-hidden">
+                            <div class="mini-loader"></div>
+                            <p>Translating... <span id="transProgress">0%</span></p>
+                        </div>
+
+                        <div class="output-area">
+                            <div id="transOutput" class="trans-output-box">Translation will appear here...</div>
+                            <button id="copyTransBtn" class="btn-cv site-hidden" style="margin-top:15px"
+                                onclick="copyTransOutput()">
+                                <i class="fas fa-copy"></i> Copy result
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOCUMENT CONVERTER CARD -->
+                <div class="translator-card tilt-card" style="margin-top: 40px; border: 1px solid rgba(0,180,216,0.2);">
+                    <div class="section-header-wrap"
+                        style="padding: 0; margin-bottom: 25px; border:none; text-align: center;">
+                        <h3 style="color:var(--white); font-size: 1.6rem; display: block; width: 100%;">Document
+                            <span>Converter</span></h3>
+                        <p style="color:var(--gray); font-size: 0.9rem; margin-top: 5px;">Convert PDF to Word & Word to
+                            PDF instantly</p>
+                    </div>
+
+                    <div class="translator-body" style="grid-template-columns: 1fr;">
+                        <div class="file-drop-zone" id="convDropZone"
+                            style="height: 180px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px dashed rgba(0,180,216,0.3); border-radius: 15px; background: rgba(0,0,0,0.2); transition: all 0.3s ease;">
+                            <i class="fas fa-file-export" style="font-size: 3rem; color: var(--primary);"></i>
+                            <p style="margin-top: 15px; color: var(--gray);">Drop PDF or Word file here</p>
+                            <input type="file" id="convFileUpload" accept=".pdf,.doc,.docx" style="display:none"
+                                onchange="handleConvUpload(event)" />
+                            <button class="btn-cv" onclick="document.getElementById('convFileUpload').click()"
+                                style="margin-top:15px">Select Document</button>
+                        </div>
+
+                        <div id="converterLoading" class="translator-loading site-hidden"
+                            style="margin-top: 20px; text-align: center;">
+                            <div class="mini-loader" style="margin: 0 auto 10px;"></div>
+                            <p id="convStatusText" style="color: var(--white);">Converting... <span
+                                    id="convProgress">0%</span></p>
+                        </div>
+
+                        <div id="convResultArea" class="output-area site-hidden"
+                            style="text-align: center; padding: 20px; background: rgba(0,180,216,0.05); border-radius: 15px; margin-top: 20px; border: 1px solid rgba(0,180,216,0.1);">
+                            <div id="convFileInfo" style="margin-bottom: 15px; color: var(--white); font-weight: 500;">
+                            </div>
+                            <button id="downloadConvBtn" class="btn-hire ripple">
+                                <i class="fas fa-download"></i> Download Converted File
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== GALLERY ===== -->
+        <section id="gallery" class="section">
+            <div class="section-header-wrap reveal-up">
+                <span class="section-tag">06</span>
+                <h2 class="section-heading">My <span>Gallery</span></h2>
+            </div>
+            <div class="gallery-toolbar">
+                <div class="filter-tabs">
+                    <button class="ftab active" onclick="filterGallery('all',this)">All</button>
+                    <button class="ftab" onclick="filterGallery('photos',this)">Photos</button>
+                    <button class="ftab" onclick="filterGallery('videos',this)">Videos</button>
+                    <button class="ftab" onclick="filterGallery('songs',this)">🎵 Songs</button>
+                </div>
+                <label class="btn-upload ripple">
+                    <input type="file" id="fileUpload" multiple accept="image/*,video/*,audio/*"
+                        onchange="handleUpload(event)" style="display:none" />
+                    <i class="fas fa-plus"></i> Upload
+                </label>
+            </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="g-item" id="defaultGalleryItem" data-type="photos">
+                    <img src="nisal.jpg" alt="Nisal" />
+                    <div class="g-overlay">
+                        <button onclick="openLightbox('nisal.jpg','image')"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIGHTBOX -->
+        <div id="lightbox" class="lightbox site-hidden" onclick="if(event.target===this)closeLB()">
+            <button class="lb-close" onclick="closeLB()"><i class="fas fa-times"></i></button>
+            <button class="lb-prev" onclick="lbNav(-1)"><i class="fas fa-chevron-left"></i></button>
+            <button class="lb-next" onclick="lbNav(1)"><i class="fas fa-chevron-right"></i></button>
+            <div id="lbContent"></div>
+        </div>
+
+        <!-- ===== NOTES ===== -->
+        <section id="notes" class="section">
+            <div class="section-header-wrap reveal-up">
+                <span class="section-tag">07</span>
+                <h2 class="section-heading">My <span>Notes</span></h2>
+            </div>
+            <div class="notes-layout">
+                <div class="note-form reveal-left">
+                    <input type="text" id="noteTitle" placeholder="Note title..." class="n-input" />
+                    <textarea id="noteContent" placeholder="Write your note..." class="n-textarea"></textarea>
+                    <div class="note-colors">
+                        <span>Color:</span>
+                        <button class="nc active" style="background:#00b4d8"
+                            onclick="pickColor('#00b4d8',this)"></button>
+                        <button class="nc" style="background:#e63946" onclick="pickColor('#e63946',this)"></button>
+                        <button class="nc" style="background:#2a9d8f" onclick="pickColor('#2a9d8f',this)"></button>
+                        <button class="nc" style="background:#f4a261" onclick="pickColor('#f4a261',this)"></button>
+                        <button class="nc" style="background:#a8dadc" onclick="pickColor('#a8dadc',this)"></button>
+                    </div>
+                    <button class="btn-hire ripple" style="width:100%" onclick="addNote()">
+                        <i class="fas fa-plus"></i> Add Note
+                    </button>
+                </div>
+                <div class="notes-board reveal-right" id="notesBoard">
+                    <p class="no-notes">No notes yet. Add one! 📝</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONTACT ===== -->
+        <section id="contact" class="section">
+            <div class="section-header-wrap reveal-up">
+                <span class="section-tag">08</span>
+                <h2 class="section-heading">Contact <span>Me</span></h2>
+            </div>
+            <div class="contact-layout">
+                <div class="contact-left reveal-left">
+                    <div class="c-card tilt-card" onclick="copyText('0715864863')">
+                        <div class="c-icon-wrap"><i class="fas fa-phone"></i></div>
+                        <div><span>Phone</span><strong class="editable" data-key="cPhone"
+                                id="cPhone">0715864863</strong></div>
+                        <span class="c-copy">📋 Copy</span>
+                    </div>
+                    <div class="c-card tilt-card" onclick="copyText('nisalmuhandiram2004@gmail.com')">
+                        <div class="c-icon-wrap"><i class="fas fa-envelope"></i></div>
+                        <div><span>Email</span><strong class="editable" data-key="cEmail"
+                                id="cEmail">nisalmuhandiram2004@gmail.com</strong></div>
+                        <span class="c-copy">📋 Copy</span>
+                    </div>
+                    <div class="c-card tilt-card">
+                        <div class="c-icon-wrap"><i class="fas fa-university"></i></div>
+                        <div><span>University</span><strong class="editable" data-key="cUni" id="cUni">University of Sri
+                                Jayawardanapura</strong></div>
+                    </div>
+                    <div class="contact-socials">
+                        <a href="#" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="mailto:nisalmuhandiram2004@gmail.com" class="social-icon"><i
+                                class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <form class="contact-form reveal-right" onsubmit="submitForm(event)">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" class="n-input" required />
+                        <i class="fas fa-user form-icon"></i>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Your Email" class="n-input" required />
+                        <i class="fas fa-envelope form-icon"></i>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Your Message" class="n-textarea" required></textarea>
+                        <i class="fas fa-comment-alt form-icon" style="top:16px"></i>
+                    </div>
+                    <button type="submit" class="btn-hire ripple">
+                        Send Message <i class="fas fa-paper-plane"></i>
+                    </button>
+                    <div id="formOk" class="form-ok site-hidden">✅ Message sent! Nisal will reply soon.</div>
+                </form>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-waves">
+                <svg viewBox="0 0 1200 60" preserveAspectRatio="none">
+                    <path d="M0,30 C300,60 900,0 1200,30 L1200,60 L0,60 Z" fill="rgba(0,180,216,0.06)" />
+                </svg>
+            </div>
+            <div class="footer-inner">
+                <div class="footer-logo">
+                    <span class="brand-icon">NM</span>
+                    <span class="editable" data-key="footerName" id="footerName">G.M. Nisal Muhandiram</span>
+                </div>
+                <p>© 2025 · All Rights Reserved</p>
+                <p class="editable" data-key="footerTag" id="footerTag">Made with ❤️ & passion</p>
+            </div>
+        </footer>
+
+        <!-- BACK TO TOP -->
+        <button id="backTop" class="back-top site-hidden" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+    </div><!-- end mainSite -->
+
+    <!-- EDIT PASSWORD MODAL -->
+    <div id="editModal" class="modal site-hidden" onclick="if(event.target===this)closeEditModal()">
+        <div class="modal-box">
+            <div class="modal-icon">🔒</div>
+            <h3>Admin Access</h3>
+            <p>Enter edit password to continue</p>
+            <input type="password" id="editPassIn" placeholder="Edit Password" class="n-input" />
+            <div class="modal-btns">
+                <button class="btn-hire ripple" onclick="verifyEdit()">Unlock</button>
+                <button class="btn-contact" onclick="closeEditModal()">Cancel</button>
+            </div>
+            <p id="editErr" class="err-msg"></p>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast site-hidden"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
